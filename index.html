@@ -1,127 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Demo - Capture Photo From Webcam Using Javascript</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register to get photos</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/camera2.css">
+    <!-- permissions -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <style type="text/css">
-        button {
-            width: 120px;
-            padding: 10px;
-            display: block;
-            margin: 20px auto;
-            border: 2px solid #111111;
-            cursor: pointer;
-            background-color: white;
-        }
-        
-        #start-camera {
-            margin-top: 50px;
-        }
-        
-        .circular-container {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 50px auto 0 auto;
-        }
-        
-        #video {
-            display: none;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Maintain aspect ratio and cover the container */
-        }
-        
-        #click-photo {
-            display: none;
-        }
-        
-        #dataurl-container {
-            display: none;
-        }
-        
-        #canvas {
-            display: block;
-            margin: 0 auto 20px auto;
-            border-radius: 50%;
-            overflow: hidden;
-            object-fit: cover;
-        }
-        
-        #dataurl-header {
-            text-align: center;
-            font-size: 15px;
-        }
-        
-        #dataurl {
-            display: block;
-            height: 250px;
-            width: 250px;
-            margin: 10px auto;
-            resize: none;
-            outline: none;
-            border: 1px solid #111111;
-            padding: 5px;
-            font-size: 13px;
-            box-sizing: border-box;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- WebcamJS CSS -->
+    <link rel="stylesheet" href="/assets/css/camera.css">
+    <!-- WebcamJS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/camera-capture-stream@latest/dist/browser-camera-capture-stream.js"></script>
+    <!-- font-awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/ico" href="assets/image/favicon.ico">
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="assets/image/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/image/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/image/favicon-16x16.png">
 </head>
 
 <body>
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+        <div class="signup">
+            <label for="chk" class="dos" aria-hidden="true">D#sharp & Suuzi's Wedding </label>
+            <ul style="list-style-type: none; color:#dedede" align="left">
+                <li><i class="fa-solid fa-camera" style="color: #dedede;"></i> Click Selfie and Get Photos </li>
+                <li><i class="fa-solid fa-check" style="color: #27db0f;"></i> Photos must be captured at present </li>
+                <li><i class="fa-solid fa-check" style="color: #27db0f;"></i> Individual selfie</li>
+                <li><i class="fa-solid fa-check" style="color: #27db0f;"></i> Good lighting</li>
+                <li><i class="fa-solid fa-xmark" style="color: #ee2b2b;"></i> Sunglasses, masks, caps</li>
+                <li><i class="fa-solid fa-xmark" style="color: #ee2b2b;"></i> Group selfies</li>
+                <li><i class="fa-solid fa-xmark" style="color: #ee2b2b;"></i> Eyes closed</li>
+                <li><i class="fa-solid fa-xmark" style="color: #ee2b2b;"></i> Filters</li>
+            </ul>
+        </div>
 
-    <button id="start-camera">Start Camera</button>
-    <div class="circular-container">
-        <video id="video" autoplay=""></video>
-    </div>
-    <button id="click-photo">Click Photo</button>
-    <div id="dataurl-container">
-        <canvas id="canvas" width="250" height="250"></canvas>
-        <div id="dataurl-header">Image Data URL</div>
-        <textarea id="dataurl" readonly=""></textarea>
-    </div>
+        <div class="login">
+            <form action="/" id="reg-page" method="post" enctype="multipart/form-data">
+                <label for="chk" class="register" aria-hidden="true">Register</label>
+                <input type="text" name="name" placeholder='Enter your Name' required>
+                <input type="text" name="phonenumber" placeholder="Whatsapp Number" required>
+                <input type="hidden" name="capturedImage" id="capturedImageInput">
+                <button id="show" class="cus" type="button"><i class="fa-solid fa-camera"></i> Open Camera</button>
+                <input class="button submit-button" type="submit" value="Get Photos">
+            </form>
+        </div>
 
-    <script>
-        let camera_button = document.querySelector("#start-camera");
-        let video = document.querySelector("#video");
-        let click_button = document.querySelector("#click-photo");
-        let canvas = document.querySelector("#canvas");
-        let dataurl = document.querySelector("#dataurl");
-        let dataurl_container = document.querySelector("#dataurl-container");
+        <div class="popup" id="popup">
+            <h1>Capture your Face</h1>
+            <p align="center" class="red-text">Keep your face in Center</p>
+            <p align="center">and Press Capture</p>
+            <div class="frame">
+                <video id="camera" width="800" height="800" autoplay></video>
+                <img id="capturedImage" style="display: none;" alt="Captured Image">
+                <div id="camera-container" class="circular-camera">
+                    <div id="camera">
+                        <div class="mask"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <button class="action cam-btn" id="takePhotoBtn" onclick="capturePhoto()"><i class="fa-solid fa-camera"></i></button>
+                <button class="action" id="retakeBtn" onclick="retakePhoto()"><i class="fa-solid fa-camera" ></i> <i class="fa-solid fa-rotate-right" ></i></button>
+                <button class="action done-btn" id="doneBtn" onclick="savePhoto()"><i class="fa-solid fa-check"></i></button>
+                <button class="action closePopupBtn" id="closePopupBtn" onclick="closePopup()"><i class="fa-regular fa-circle-xmark" style="color: #fff;"></i></button>
+            </div>
+            <div class="close-btn" onclick="closePopup()">X</div>
+        </div>
 
-        camera_button.addEventListener('click', async function() {
-            let stream = null;
+        <script>
+            let isMirrored = true;
+            let videoStream;
 
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: false
-                });
-            } catch (error) {
-                alert(error.message);
-                return;
+            document.querySelector('#show').addEventListener('click', function() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({
+                            video: true
+                        })
+                        .then(function(stream) {
+                            videoStream = stream;
+                            initializeCamera();
+                            document.querySelector('.popup').style.display = 'block';
+                        })
+                        .catch(function(err) {
+                            console.error('Error accessing the camera: ', err);
+                        });
+                } else {
+                    console.error('WebRTC is not supported on this browser.');
+                }
+            });
+
+            function initializeCamera() {
+                const video = document.querySelector('#camera');
+                video.srcObject = videoStream;
+                video.play();
             }
 
-            video.srcObject = stream;
+            function captureAndMirror() {
+                const video = document.querySelector('video');
+                const canvas = document.createElement('canvas');
+                canvas.width = video.width;
+                canvas.height = video.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const dataURI = canvas.toDataURL('image/jpeg');
+                document.querySelector('#capturedImage').src = dataURI;
+                document.querySelector('#capturedImage').style.display = 'inline';
+                if (isMirrored) {
+                    document.querySelector('#capturedImage').style.transform = 'scaleX(-1)';
+                } else {
+                    document.querySelector('#capturedImage').style.transform = 'scaleX(1)';
+                }
+            }
 
-            video.style.display = 'block';
-            camera_button.style.display = 'none';
-            click_button.style.display = 'block';
-        });
+            function capturePhoto() {
+                document.querySelector('#takePhotoBtn').style.display = 'none';
+                document.querySelector('#retakeBtn').style.display = 'inline-block';
+                document.querySelector('#doneBtn').style.display = 'inline-block';
+                captureAndMirror();
+            }
 
-        click_button.addEventListener('click', function() {
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            let image_data_url = canvas.toDataURL('image/jpeg');
+            function retakePhoto() {
+                document.querySelector('#capturedImage').style.display = 'none';
+                document.querySelector('#capturedImage').src = '';
+                document.querySelector('#takePhotoBtn').style.display = 'inline-block';
+                document.querySelector('#retakeBtn').style.display = 'none';
+                document.querySelector('#doneBtn').style.display = 'none';
+                initializeCamera();
+            }
 
-            dataurl.value = image_data_url;
-            dataurl_container.style.display = 'block';
-        });
-    </script>
+            function closePopup() {
+                document.querySelector('.popup').style.display = 'none';
+                videoStream.getTracks().forEach(track => track.stop());
+                document.querySelector('#capturedImage').src = '';
+                document.querySelector('#capturedImage').style.display = 'none';
+                document.querySelector('#takePhotoBtn').style.display = 'inline-block';
+                document.querySelector('#retakeBtn').style.display = 'none';
+                document.querySelector('#doneBtn').style.display = 'none';
+            }
 
+            function savePhoto() {
+                const imageDataURI = document.querySelector('#capturedImage').src;
+                document.querySelector('#capturedImageInput').value = imageDataURI;
+                document.querySelector('#show').innerText = 'Selfie.jpg';
+                closePopup();
+            }
+
+            document.querySelector('#closePopupBtn').addEventListener('click', closePopup);
+        </script>
+    </div>
 </body>
 
 </html>
