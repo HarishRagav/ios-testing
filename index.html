@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register to get photos</title>
+    <title>ios testing</title>
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/camera2.css">
     <!-- permissions -->
@@ -63,14 +63,11 @@
                     <video id="camera" playsinline autoplay muted></video>
                 </div>
             </div>
-            <div class="buttons">
-                <button class="action cam-btn" id="takePhotoBtn" onclick="capturePhoto()"><i
-                        class="fa-solid fa-camera"></i></button>
-                <button class="action" id="retakeBtn" onclick="retakePhoto()"><i class="fa-solid fa-camera"></i> <i
-                        class="fa-solid fa-rotate-right"></i></button>
-                <button class="action done-btn" id="doneBtn" onclick="savePhoto()"><i class="fa-solid fa-check"></i></button>
-                <button class="action closePopupBtn" id="closePopupBtn" onclick="closePopup()"><i
-                        class="fa-regular fa-circle-xmark" style="color: #fff;"></i></button>
+            <div class="buttons" id="imageButtons" style="display: block;">
+                <button class="action cam-btn" id="takePhotoBtn" onclick="capturePhoto()"><i class="fa-solid fa-camera"></i> </button>
+                <button class="action cam-btn" id="retakeBtn" onclick="retakePhoto()" style="display: none;"><i class="fa-solid fa-camera"></i> </button>
+                <button class="action done-btn" id="doneBtn" onclick="savePhoto()" style="display: none;"><i class="fa-solid fa-check"></i> </button>
+                <button class="action closePopupBtn" id="closePopupBtn" onclick="closePopup()"><i class="fa-regular fa-circle-xmark" style="color: #fff;"></i></button>
             </div>
             <div class="close-btn" onclick="closePopup()">X</div>
         </div>
@@ -116,16 +113,17 @@
 
                 document.querySelector('#capturedImage').src = image.src;
                 document.querySelector('#capturedImage').style.display = 'inline';
-                if (isMirrored) {
-                    document.querySelector('#capturedImage').style.transform = 'scaleX(-1)';
-                } else {
-                    document.querySelector('#capturedImage').style.transform = 'scaleX(1)';
-                }
+                document.getElementById('retakeBtn').style.display = 'inline'; // Show retake button
+                document.getElementById('doneBtn').style.display = 'inline'; // Show done button
+                document.getElementById('takePhotoBtn').style.display = 'none'; // Hide take photo button
             }
 
             function retakePhoto() {
                 document.querySelector('#capturedImage').style.display = 'none';
                 document.querySelector('#capturedImage').src = '';
+                document.getElementById('retakeBtn').style.display = 'none'; // Hide retake button
+                document.getElementById('doneBtn').style.display = 'none'; // Hide done button
+                document.getElementById('takePhotoBtn').style.display = 'inline'; // Show take photo button
             }
 
             function closePopup() {
@@ -149,7 +147,6 @@
 
             document.querySelector('#closePopupBtn').addEventListener('click', closePopup);
         </script>
-
 
     </div>
     <style>
